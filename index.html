@@ -1,23 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>ポケモン割合：テスト対策マスター</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background-color: #e1f5fe; padding: 20px; touch-action: manipulation; }
+        .container { background: white; max-width: 500px; margin: 0 auto; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 8px solid #03a9f4; position: relative; }
+        .btn { padding: 15px 20px; margin: 10px; cursor: pointer; border-radius: 30px; border: none; font-size: 1.1rem; color: white; font-weight: bold; width: 85%; background: #03a9f4; }
+        .info-card { background: #f0faff; border: 2px solid #03a9f4; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        input { font-size: 1.5rem; padding: 10px; width: 120px; border: 2px solid #03a9f4; border-radius: 10px; text-align: center; outline: none; }
+        .step-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px; color: white; font-weight: bold; }
+        .step1 { background: #4fc3f7; } .step2 { background: #03a9f4; } .step3 { background: #0288d1; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="game-view">
+    <h1 style="color:#0288d1;">割合：テスト対策編</h1>
+    <div class="info-card">
+        <p>テストに出る「考え方」をマスターしよう！<br>数値は毎回変わるから、暗記は通用しないぞ！</p>
+    </div>
+    <button class="btn" onclick="startGame()">特訓スタート！</button>
+</div>
+
+<script>
+let score = 0; let qIdx = 0; let currentQ = {};
+let lastQText = ""; 
+
+function startGame() { score = 0; qIdx = 0; nextStep(); }
+
 function makeQuestion() {
+    let q;
     const seed = Math.random();
     
+    // 全12問：Stepごとにテストの重要ポイントをカバー
     if (qIdx < 4) {
-        [span_6](start_span)// 【基礎】数値はランダム生成（テストの 0.06 や 1.93 とは別の値[span_6](end_span)）
-        const p = Math.floor(seed * 150) + 5; // 5%〜155%までランダム
-        return { st: "変換特訓", t: `割合 <b>${p/100}</b> を百分率に、<br>または <b>${p}%</b> を割合になおしなさい。`, a: (seed > 0.5 ? p : p/100) };
-    } 
-    else if (qIdx < 8) {
-        [span_7](start_span)// 【標準】「比べられる量」「もとにする量」の概念は維持[span_7](end_span)
-        [span_8](start_span)// テストの「120g」や「21人」を、モンスターの「重さ」や「数」に変更[span_8](end_span)
-        const base = (Math.floor(seed * 20) + 5) * 10; // 50〜250
-        const rate = [0.1, 0.2, 0.4, 0.8][Math.floor(seed * 4)];
-        return { st: "基本計算", t: `最大HP <b>${base}</b> の <b>${rate*100}%</b> はいくつ？`, a: base * rate };
-    } 
-    else {
-        [span_9](start_span)// 【応用】テストの「靴の利益」や「本のページ」の構造を利用[span_9](end_span)
-        // 設定を「ショップの仕入れ」や「冒険の進捗」にアレンジ
-        const price = (Math.floor(seed * 30) + 10) * 100; // 1000円〜4000円
-        const profit = [10, 20, 30][Math.floor(seed * 3)];
-        return { st: "文章題", t: `道具の仕入れ値 <b>${price}円</b> に、<b>${profit}%</b> の利益を加えた売値は？`, a: price * (1 + profit/100) };
+        [span_1](start_span)// Step 1: 百分率と小数の変換 (テスト 4, 5番 相当[span_1](end_span))
+        const p = [4, 7, 25, 48.5, 90, 125, 350][Math.floor(seed * 7)];
+        if (seed > 0.5) {
+            q = { s: "step1", st: "変換", t: `割合 <b>${(p/100).toFixed(3).replace(/\.?0+$/, "")}</b> を<br>「百分率（％）」になおすと？`, a: p, u: "%" };
+        } else {
+            q = { s: "step1", st: "変換", t: `<b>${p}%</b> を<br>「割合（小数）」になおすと？`, a: p/100, u: "" };
+        }
+    } else if (qIdx < 8) {
+        [span_2](start_span)// Step 2: 3公式の基本 (テスト 1, 6, 7, 8番 相当[span_2](end_span))
+        const type = Math.floor(seed * 3);
+        const base = (Math.floor(Math.random() * 20) + 5) * 10; // 50-240
+        const rate = [0.1, 0.25, 0.4, 0.8][Math.floor(Math.random() * 4)];
+        
+        if (type === 0) { // 比べられる量を求める
+            q = { s: "step2", st: "基本計算", t: `最大HP <b>${base}</b> のポケモンの<br><b>${(rate*100).toFixed(0)}%</b> は、HPいくつ分？`, a: base * rate, u: "HP" };
+        } else if (type === 1) { // 割合を求める
+            const part = base * rate;
+            q = { s: "step2", st: "基本計算", t: `<b>${base}回</b> 投げたモンスターボールが<br><b>${part}回</b> 当たった。命中した割合は何％？`, a: rate*100, u: "%" };
+        } else { // もとにする量を求める
+            const part = base * rate;
+            q = { s: "step2", st: "基本計算", t: `きずぐすりの <b>${(rate*100).toFixed(0)}%</b> を使い、<br><b>${part}ml</b> 減った。もとの量は何ml？`, a: base, u: "ml" };
+        }
+    } else {
+        [span_3](start_span)// Step 3: 文章題・応用 (テスト裏面 1-5番 相当[span_3](end_span))
+        const type = Math.floor(seed * 3);
+        if (type === 0) { // 利益(割増)
+            const price = (Math.floor(Math.random() * 10) + 10) * 100; // 1000-1900
+            const up = [10, 20, 30][Math.floor(Math.random() * 3)];
+            q = { s: "step3", st: "応用", t: `仕入れ値 <b>${price}円</b> の道具に<br><b>${up}%</b> の利益をのせて売ります。売値は何円？`, a: price * (1 + up/100), u: "円" };
+        } else if (type === 1) { // 100%超え
+            const cap = [40, 50, 60][Math.floor(Math.random() * 3)];
+            const over = [120, 150, 200][Math.floor(Math.random() * 3)];
+            q = { s: "step3", st: "応用", t: `定員 <b>${cap}人</b> の観戦席に、定員の <b>${over}%</b> の<br>希望者が来ました。希望者は何人？`, a: cap * over / 100, u: "人" };
+        } else { // もとにする量を求める(文章)
+            const pages = [60, 80, 120][Math.floor(Math.random() * 3)];
+            const r = [0.4, 0.5, 0.8][Math.floor(Math.random() * 3)];
+            q = { s: "step3", st: "応用", t: `図鑑を <b>${pages}ページ</b> 読みました。<br>これは全体の <b>${(r*100).toFixed(0)}%</b> です。図鑑は全部で何ページ？`, a: pages / r, u: "ページ" };
+        }
     }
+
+    if (q.t === lastQText) return makeQuestion();
+    lastQText = q.t;
+    return q;
 }
+
+function nextStep() {
+    currentQ = makeQuestion();
+    document.getElementById("game-view").innerHTML = `
+        <div class="step-badge ${currentQ.s}">${currentQ.st}</div>
+        <p>第 ${qIdx + 1} / 12 問</p>
+        <div class="info-card" style="font-size:1.1rem; line-height:1.6;">${currentQ.t}</div>
+        <input type="number" id="ans" step="0.001" autofocus> ${currentQ.u}<br>
+        <div id="btn-area">
+            <button class="btn" style="margin-top:20px;" onclick="check()">決定！</button>
+        </div>
+        <div id="msg"></div>
+    `;
+    document.getElementById("ans").focus();
+}
+
+function check() {
+    const val = document.getElementById("ans").value;
+    const msg = document.getElementById("msg");
+    const area = document.getElementById("btn-area");
+    if(!val) return;
+
+    if (Math.abs(parseFloat(val) - currentQ.a) < 0.001) {
+        msg.innerHTML = "<h2 style='color:#03a9f4;'>✨ 正解！</h2>";
+        score++;
+    } else {
+        msg.innerHTML = `<h2 style='color:#d32f2f;'>❌ 正解は ${currentQ.a}</h2>`;
+    }
+
+    qIdx++;
+    const btnTxt = qIdx < 12 ? "次の問題へ" : "結果発表";
+    const nextFunc = qIdx < 12 ? "nextStep()" : "showResult()";
+    area.innerHTML = `<button class="btn" onclick="${nextFunc}">${btnTxt}</button>`;
+}
+
+function showResult() {
+    const v = document.getElementById("game-view");
+    v.innerHTML = `
+        <div class="info-card" style="border-width:4px;">
+            <h2>特訓結果</h2>
+            <h1 style="font-size:4rem; color:#0288d1; margin:10px 0;">${score} <span style="font-size:1.5rem;">/ 12</span></h1>
+            <p><b>${score === 12 ? "これならテストも100点だ！" : "間違えたところを復習しよう！"}</b></p>
+        </div>
+        <button class="btn" onclick="location.reload()">もう一度挑戦！</button>
+    `;
+}
+</script>
+</body>
+</html>
