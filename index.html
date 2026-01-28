@@ -1,0 +1,23 @@
+function makeQuestion() {
+    const seed = Math.random();
+    
+    if (qIdx < 4) {
+        [span_6](start_span)// 【基礎】数値はランダム生成（テストの 0.06 や 1.93 とは別の値[span_6](end_span)）
+        const p = Math.floor(seed * 150) + 5; // 5%〜155%までランダム
+        return { st: "変換特訓", t: `割合 <b>${p/100}</b> を百分率に、<br>または <b>${p}%</b> を割合になおしなさい。`, a: (seed > 0.5 ? p : p/100) };
+    } 
+    else if (qIdx < 8) {
+        [span_7](start_span)// 【標準】「比べられる量」「もとにする量」の概念は維持[span_7](end_span)
+        [span_8](start_span)// テストの「120g」や「21人」を、モンスターの「重さ」や「数」に変更[span_8](end_span)
+        const base = (Math.floor(seed * 20) + 5) * 10; // 50〜250
+        const rate = [0.1, 0.2, 0.4, 0.8][Math.floor(seed * 4)];
+        return { st: "基本計算", t: `最大HP <b>${base}</b> の <b>${rate*100}%</b> はいくつ？`, a: base * rate };
+    } 
+    else {
+        [span_9](start_span)// 【応用】テストの「靴の利益」や「本のページ」の構造を利用[span_9](end_span)
+        // 設定を「ショップの仕入れ」や「冒険の進捗」にアレンジ
+        const price = (Math.floor(seed * 30) + 10) * 100; // 1000円〜4000円
+        const profit = [10, 20, 30][Math.floor(seed * 3)];
+        return { st: "文章題", t: `道具の仕入れ値 <b>${price}円</b> に、<b>${profit}%</b> の利益を加えた売値は？`, a: price * (1 + profit/100) };
+    }
+}
