@@ -3,99 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>割合テスト完全攻略</title>
+    <title>割合マスター：究極・完全版</title>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #fdf6e3; padding: 20px; }
-        .box { background: white; max-width: 480px; margin: 0 auto; padding: 20px; border-radius: 15px; border-top: 8px solid #e67e22; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .btn { padding: 15px; width: 100%; background: #e67e22; color: white; border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer; margin-top: 10px; font-weight: bold; }
-        input { font-size: 1.5rem; width: 140px; padding: 10px; margin: 10px; border: 2px solid #e67e22; border-radius: 10px; text-align: center; }
-        .q-card { background: #fff9f0; padding: 20px; border-radius: 10px; margin: 15px 0; font-size: 1.1rem; line-height: 1.6; border-left: 5px solid #e67e22; text-align: left; }
-        .step-info { color: #e67e22; font-weight: bold; font-size: 0.9rem; }
+        :root { --main: #27ae60; --gold: #ffd700; --bg: #f4faf6; --line: #555; }
+        body { font-family: sans-serif; text-align: center; background: var(--bg); padding: 10px; color: #333; }
+        .box { background: white; max-width: 500px; margin: 0 auto; padding: 20px; border-radius: 20px; border: 4px solid var(--main); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .q-card { background: #fdfdfd; padding: 15px; border-radius: 12px; margin-bottom: 10px; font-weight: bold; border-bottom: 2px solid #eee; font-size: 1.1rem; line-height: 1.5; }
+        .hint-text { background: #fffde7; color: #856404; padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 10px; border-left: 4px solid #fbc02d; text-align: left; }
+        .diagram-area { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 25px 10px; margin: 10px 0; cursor: pointer; position: relative; }
+        .diagram-area:hover { border-color: var(--main); background: #f0fff4; }
+        .line-container { position: relative; height: 50px; margin: 20px 0; }
+        .base-line { position: absolute; left: 10%; right: 10%; height: 2px; background: var(--line); top: 50%; }
+        .tick { position: absolute; width: 2px; height: 12px; background: var(--line); top: calc(50% - 6px); }
+        .label { position: absolute; font-size: 0.75rem; width: 60px; text-align: center; left: -30px; }
+        .val-top { top: -28px; font-weight: bold; color: #d35400; }
+        .val-btm { bottom: -28px; }
+        .btn { padding: 15px; width: 100%; background: var(--main); color: white; border: none; border-radius: 50px; font-size: 1.2rem; cursor: pointer; font-weight: bold; margin-top: 10px; box-shadow: 0 4px 0 #1e8449; }
+        .btn:active { transform: translateY(4px); box-shadow: none; }
+        input { font-size: 1.8rem; width: 140px; padding: 10px; border: 3px solid #ddd; border-radius: 15px; text-align: center; margin-bottom: 10px; }
+        .explain-card { background: #fff1f0; border: 2px solid #ffa39e; border-radius: 15px; padding: 15px; margin-top: 15px; text-align: left; font-size: 0.9rem; line-height: 1.6; color: #222; }
+
+        /* ぬいぐるみブロッコリー再現 */
+        #perfect-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, #fff, #ffd700); display:none; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+        .broccoli-nuigurumi { width: 180px; height: 160px; position: relative; animation: bounce 0.6s infinite alternate; }
+        .head-fluffy { width: 180px; height: 120px; background: #27ae60; border-radius: 40% 40% 30% 30%; position: relative; box-shadow: 0 0 25px rgba(255,215,0,0.8); }
+        .face-body { width: 100px; height: 85px; background: #c1e1c1; border-radius: 35% 35% 50% 50%; margin: -45px auto 0; position: relative; }
+        .eye { width: 10px; height: 10px; background: #222; border-radius: 50%; position: absolute; top: 35px; }
+        .mouth { width: 12px; height: 6px; border-bottom: 3px solid #222; border-radius: 5px; position: absolute; top: 48px; left: 44px; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-40px); } }
     </style>
 </head>
 <body>
 
-<div class="box" id="main-view">
-    <h2 style="color:#d35400;">割合テスト完全攻略編</h2>
-    <p>テストの全パターンをマスターしよう！</p>
-    <button class="btn" onclick="start()">特訓スタート！</button>
+<div class="box" id="view">
+    <h1 style="color:var(--main);">🥦 割合マスター 🥦</h1>
+    <p>10問連続正解で神ブロッコリーに会える！</p>
+    <button class="btn" onclick="start()">スタート！</button>
+</div>
+
+<div id="perfect-screen" onclick="location.reload()">
+    <div class="broccoli-nuigurumi">
+        <div class="head-fluffy"></div>
+        <div class="face-body">
+            <div class="eye" style="left:28px;"></div>
+            <div class="eye" style="right:28px;"></div>
+            <div class="mouth"></div>
+        </div>
+    </div>
+    <h1 style="color:#b8860b; font-size:2.8rem; text-shadow:2px 2px white; margin:20px 0;">神 降 臨</h1>
+    <button class="btn" style="width:200px;">伝説へ戻る</button>
 </div>
 
 <script>
-let score = 0; let count = 0; let currentQ = {};
+let score = 0; let count = 0; let q = {}; let used = [];
 
-// テストプリントの内容に基づいた問題生成
-function getQuestion() {
-    const r = Math.random();
-    // 1-3問：百分率の基本、4-7問：3公式、8-10問：文章題応用
-    if (count < 3) {
-        const p = [8, 30, 46.2, 80, 150, 400][Math.floor(Math.random()*6)];
-        return r > 0.5 ? { s:"基本", t:`割合 <b>${(p/100).toFixed(3).replace(/\.?0+$/, "")}</b> を<br>百分率（％）になおすと？`, a:p, u:"%" } 
-                       : { s:"基本", t:`<b>${p}%</b> を<br>割合（小数）になおすと？`, a:p/100, u:"" };
-    } else if (count < 7) {
-        const type = Math.floor(Math.random()*3);
-        if(type==0) {
-            const b = [120, 200, 500][Math.floor(Math.random()*3)];
-            const p = [30, 40, 75][Math.floor(Math.random()*3)];
-            return { s:"計算", t:`<b>${b}g</b> の <b>${p}%</b> は何g？`, a: b*p/100, u:"g" };
-        } else if(type==1) {
-            return { s:"計算", t:`<b>21人</b> は <b>15人</b> の何％？`, a:140, u:"%" };
-        } else {
-            return { s:"計算", t:`<b>18L</b> が <b>90%</b> にあたるとき、<br>もとの体積は何L？`, a:20, u:"L" };
-        }
-    } else {
-        const type = Math.floor(Math.random()*3);
-        if(type==0) {
-            const b = [2500, 3000, 1500][Math.floor(Math.random()*3)];
-            return { s:"応用", t:`仕入れ値 <b>${b}円</b> に <b>20%</b> の利益をのせた売値は何円？`, a: b*1.2, u:"円" };
-        } else if(type==1) {
-            const b = [40, 50, 60][Math.floor(Math.random()*3)];
-            return { s:"応用", t:`定員 <b>${b}人</b> の <b>130%</b> の希望者が来た。何人？`, a: b*1.3, u:"人" };
-        } else {
-            return { s:"応用", t:`<b>72ページ</b> 読んだ。これは全体の <b>60%</b>。全部で何ページ？`, a:120, u:"ページ" };
-        }
-    }
-}
+const bank = [
+    // 数直線セクション (テストPDF 1, 4, 8番の内容を元に作成)
+    { type: "choice", t: "「18Lが90%にあたるとき、もとの体積は？」<br>正しい図を選んで！",
+        opts: [{top:["0","18","[?]"],btm:["0","0.9","1"]},{top:["0","[?]","18"],btm:["0","0.9","1"]},{top:["0","18","1"],btm:["0","0.9","[?]"]}], a: 0,
+        e: "1. 18Lが90%(0.9)なので、18と0.9が縦に並びます。<br>2. 『もと』は1(100%)のことなので、1の上が[?]になります。" },
+    { type: "choice", t: "「120gの30%は何g？」<br>正しい図を選んで！",
+        opts: [{top:["0","[?]","120"],btm:["0","0.3","1"]},{top:["0","120","[?]"],btm:["0","0.3","1"]},{top:["0","30","120"],btm:["0","0.3","1"]}], a: 0,
+        e: "1. 『120gの』は『もと(1)』のことなので、120と1が縦に並びます。<br>2. 求めるのは『30%(0.3)』の量なので、0.3の上が[?]です。" },
+    { type: "choice", t: "「80kgをもとにした56kg」の図は？",
+        opts: [{top:["0","56","80"],btm:["0","[?]","1"]},{top:["0","80","56"],btm:["0","[?]","1"]},{top:["0","56","1"],btm:["0","80","[?]"]}], a: 0,
+        e: "1. 80kgが『もと(1)』です。<br>2. 56kgが比べられる量なので、割合は[?]になります。" },
 
-function start() { score = 0; count = 0; next(); }
+    // 計算セクション (PDF表面・裏面全範囲)
+    { type: "num", t: "80kgをもとにした56kgの割合は？", a: 0.7, h: "56(く) ÷ 80(も) を計算！", e: "式：56 ÷ 80 = 0.7<br>『もとにする量』で割るのが基本です。" },
+    { type: "num", t: "20回中16回勝った。勝った割合を％で！", a: 80, h: "16 ÷ 20 をして100をかける！", e: "16 ÷ 20 = 0.8<br>0.8は80%のことです。" },
+    { type: "num", t: "21人は15人の何％？", a: 140, h: "21 ÷ 15 を計算！", e: "21 ÷ 15 = 1.4<br>1.4を％にすると140%になります。" },
+    { type: "num", t: "仕入れ値2500円に20％の利益をのせた売値は？", a: 3000, h: "1.2倍するか、利益を足そう！", e: "2500 × 1.2 = 3000円。<br>利益分は500円だね。" },
+    { type: "num", t: "定員40人の130%の希望者が来た。何人？", a: 52, h: "40 × 1.3 を計算！", e: "40 × 1.3 = 52人<br>定員をこえているのがポイント！" },
+    { type: "num", t: "90㎡の面積のうち野菜畑は27㎡。何％？", a: 30, h: "27 ÷ 90 を計算！", e: "27 ÷ 90 = 0.3<br>0.3は30%です。" },
+    { type: "num", t: "本を72ページ読んだ。これは全体の60％。全体は何ページ？", a: 120, h: "72 ÷ 0.6 を計算！", e: "式：72 ÷ 0.6 = 120ページ。<br>もとのページ数は72より多いはず！" },
+    { type: "num", t: "600円の30%引き。売値は何円？", a: 420, h: "0.7(のこりの割合)をかけよう！", e: "600 × 0.7 = 420円。<br>割引額は180円です。" },
+    { type: "num", t: "0.06を百分率（％）になおすと？", a: 6, h: "100をかけよう！", e: "0.06 × 100 = 6%" },
+    { type: "num", t: "1.93を百分率（％）になおすと？", a: 193, h: "100をかけよう！", e: "1.93 × 100 = 193%" },
+    { type: "num", t: "46.2%を小数になおすと？", a: 0.462, h: "100でわろう！", e: "46.2 ÷ 100 = 0.462" },
+    { type: "num", t: "150%を小数になおすと？", a: 1.5, h: "100でわろう！", e: "150 ÷ 100 = 1.5" },
+    { type: "num", t: "15回中6回成功したシュートの割合は？(小数で)", a: 0.4, h: "6 ÷ 15 を計算！", e: "6 ÷ 15 = 0.4" },
+    { type: "num", t: "20回中8回成功したシュートの割合は？(小数で)", a: 0.4, h: "8 ÷ 20 を計算！", e: "8 ÷ 20 = 0.4" },
+    { type: "num", t: "13回中4回成功したシュートの割合は？(小数第2位を四捨五入)", a: 0.3, h: "4 ÷ 13 を計算！", e: "4 ÷ 13 = 0.307... なので約0.3です。" },
+    { type: "num", t: "600円から150円引き。売値は何円？", a: 450, h: "そのまま引き算しよう！", e: "600 - 150 = 450円" },
+    { type: "num", t: "もとの0.9倍が18Lのとき、もとは？", a: 20, h: "18 ÷ 0.9 を計算！", e: "18 ÷ 0.9 = 20L" }
+];
+
+function start() { score = 0; count = 0; used = []; next(); }
 
 function next() {
-    currentQ = getQuestion();
-    document.getElementById("main-view").innerHTML = `
-        <span class="step-info">ステップ：${currentQ.s}</span>
-        <p>第 ${count + 1} / 10 問</p>
-        <div class="q-card">${currentQ.t}</div>
-        <input type="number" id="ans" step="0.001" autofocus> ${currentQ.u}<br>
-        <button class="btn" onclick="check()">答え合わせ</button>
-    `;
-    document.getElementById("ans").focus();
-}
-
-function check() {
-    const val = parseFloat(document.getElementById("ans").value);
-    if (isNaN(val)) return;
-    const isCorrect = Math.abs(val - currentQ.a) < 0.01;
-    if (isCorrect) score++;
-
-    document.getElementById("main-view").innerHTML += `
-        <div style="margin-top:15px; color:${isCorrect?'#27ae60':'#c0392b'}; font-weight:bold;">
-            ${isCorrect ? '✨ 正解！' : '❌ ざんねん… 正解は ' + currentQ.a}
-        </div>
-    `;
+    let i; do { i = Math.floor(Math.random()*bank.length); } while(used.includes(i));
+    used.push(i); q = bank[i];
+    let html = `<div style="color:var(--main); font-weight:bold;">Lv.${count+1} / 10</div>`;
+    html += `<div class="q-card">${q.t}</div>`;
+    if(q.h) html += `<div class="hint-text">💡 <b>ヒント：</b>${q.h}</div>`;
     
-    count++;
-    const btnText = count < 10 ? "つぎの問題へ" : "結果を見る";
-    const func = count < 10 ? "next()" : "showResult()";
-    document.getElementById("main-view").innerHTML += `<button class="btn" onclick="${func}">${btnText}</button>`;
+    if(q.type === "choice") {
+        q.opts.forEach((opt, idx) => {
+            html += `<div class="diagram-area" onclick="check(${idx})">
+                <div class="line-container">
+                    <div class="base-line"></div>
+                    <div class="tick" style="left:10%;"></div><div class="label val-top" style="left:10%;">${opt.top[0]}</div>
+                    <div class="tick" style="left:50%;"></div><div class="label val-top" style="left:50%;">${opt.top[1]}</div>
+                    <div class="tick" style="left:90%;"></div><div class="label val-top" style="left:90%;">${opt.top[2]}</div>
+                    <div class="label val-btm" style="left:10%;">${opt.btm[0]}</div>
+                    <div class="label val-btm" style="left:50%;">${opt.btm[1]}</div>
+                    <div class="label val-btm" style="left:90%;">${opt.btm[2]}</div>
+                </div>
+            </div>`;
+        });
+    } else {
+        html += `<input type="number" id="ans" step="0.001" autofocus><br><button class="btn" onclick="checkNum()">答え合わせ！</button>`;
+    }
+    document.getElementById("view").innerHTML = html;
 }
 
-function showResult() {
-    document.getElementById("main-view").innerHTML = `
-        <h2>しゅうりょう！</h2>
-        <div style="font-size:3rem; color:#e67e22; margin:20px 0;">${score} <span style="font-size:1.2rem;">/ 10</span></div>
-        <p>${score === 10 ? '完璧！君は割合マスターだ！' : '間違えた問題をもう一度解いてみよう！'}</p>
-        <button class="btn" onclick="location.reload()">もう一度挑戦</button>
-    `;
+function check(idx) { result(idx === q.a); }
+function checkNum() { result(Math.abs(parseFloat(document.getElementById("ans").value) - q.a) < 0.01); }
+
+function result(isOk) {
+    if(isOk) score++;
+    let rHtml = isOk ? `<h2 style="color:var(--main)">✨ 正解！ナイスブロッコリー！</h2>` : `<div class="explain-card"><b>❌ 解説：</b><br>${q.e}</div>`;
+    document.getElementById("view").innerHTML += rHtml;
+    count++;
+    const btnText = count < 10 ? "次の問題へ" : "結果を見る";
+    const func = count < 10 ? "next()" : "fin()";
+    document.getElementById("view").innerHTML += `<button class="btn" style="background:#444;" onclick="${func}">${btnText}</button>`;
+}
+
+function fin() {
+    if(score === 10) document.getElementById("perfect-screen").style.display = "flex";
+    else document.getElementById("view").innerHTML = `<h2>しゅうりょう！</h2><h1>${score} / 10</h1><p>全問正解で「神」に会えるぞ！</p><button class="btn" onclick="location.reload()">リベンジする！</button>`;
 }
 </script>
 </body>
