@@ -1,84 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>割合テスト対策</title>
+    <title>割合テスト対策マスター</title>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #e3f2fd; }
-        .box { background: white; max-width: 400px; margin: 20px auto; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .btn { padding: 15px; width: 100%; background: #1e88e5; color: white; border: none; border-radius: 5px; font-size: 1.2rem; cursor: pointer; margin-top: 10px; }
-        input { font-size: 1.5rem; width: 100px; padding: 5px; margin: 10px; border: 2px solid #1e88e5; border-radius: 5px; text-align: center; }
+        body { font-family: sans-serif; text-align: center; background: #fdf6e3; padding: 20px; }
+        .box { background: white; max-width: 450px; margin: 0 auto; padding: 20px; border-radius: 15px; border-top: 8px solid #cb4b16; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn { padding: 15px; margin: 10px; cursor: pointer; border-radius: 30px; border: none; font-size: 1.1rem; color: white; font-weight: bold; width: 90%; background: #cb4b16; }
+        .card { background: #eee8d5; padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 1.1rem; line-height: 1.6; }
+        input { font-size: 1.5rem; padding: 10px; width: 120px; border: 2px solid #cb4b16; border-radius: 10px; text-align: center; }
     </style>
 </head>
 <body>
-
-<div class="box" id="disp">
-    <h2>割合テスト対策編</h2>
-    <p>テストにそっくりな問題が出るよ！</p>
-    <button class="btn" onclick="start()">スタート！</button>
+<div class="box" id="game">
+    <h2 style="color:#cb4b16;">割合：テスト対策特訓</h2>
+    <p>テストプリントの内容を完全カバー！<br>合格目指してがんばろう。</p>
+    <button class="btn" onclick="start()">特訓開始！</button>
 </div>
 
 <script>
-let score = 0; let count = 0; let q = {};
+let score = 0; let qCount = 0; let currentQ = {};
 
-[span_2](start_span)// テストプリント[span_2](end_span) に合わせた問題リスト
-function getQ() {
-    const list = [
-        [span_3](start_span){ t: "80kgをもとにした56kgの割合は？", a: 0.7, u: "" }, //[span_3](end_span)
-        [span_4](start_span){ t: "20回中16回勝った。勝った割合は何％？", a: 80, u: "％" }, //[span_4](end_span)
-        [span_5](start_span){ t: "120gの30％は何g？", a: 36, u: "g" }, //[span_5](end_span)
-        [span_6](start_span){ t: "21人は15人の何％？", a: 140, u: "％" }, //[span_6](end_span)
-        [span_7](start_span){ t: "18Lが90％にあたるとき、もとの体積は何L？", a: 20, u: "L" }, //[span_7](end_span)
-        [span_8](start_span){ t: "定員40人の130％の希望者は何人？", a: 52, u: "人" }, //[span_8](end_span)
-        [span_9](start_span){ t: "仕入れ値2500円に20％の利益をのせた売値は？", a: 3000, u: "円" }, //[span_9](end_span)
-        [span_10](start_span){ t: "72ページ読んだ。これは全体の60％。全部で何ページ？", a: 120, u: "ページ" } //[span_10](end_span)
-    ];
-    return list[count % list.length];
-}
+function start() { score = 0; qCount = 0; next(); }
 
-function start() {
-    score = 0; count = 0;
-    next();
+function make() {
+    const r = Math.random();
+    if (qCount < 3) {
+        [span_1](start_span)// 【知識】小数と百分率の変換[span_1](end_span)
+        let p = [6, 80, 193, 46.2, 150][Math.floor(Math.random()*5)];
+        return r > 0.5 ? { t:`割合 <b>${(p/100).toFixed(3).replace(/\.?0+$/, "")}</b> を<br>百分率（％）になおすと？`, a:p, u:"%" } 
+                       : { t:`<b>${p}%</b> を<br>割合（小数）になおすと？`, a:p/100, u:"" };
+    } else if (qCount < 7) {
+        [span_2](start_span)// 【技能】3公式（g、人、Lなどの単位含む）[span_2](end_span)
+        let type = Math.floor(Math.random()*3);
+        if(type==0) return { t:`<b>120g</b> の <b>30%</b> は何g？`, a:36, u:"g" };
+        if(type==1) return { t:`<b>21人</b> は <b>15人</b> の何％？`, a:140, u:"%" };
+        return { t:`<b>18L</b> が <b>90%</b> のとき、<br>もとの体積は何L？`, a:20, u:"L" };
+    } else {
+        [span_3](start_span)// 【思考】利益・100%超え・全体を求める応用[span_3](end_span)
+        let type = Math.floor(Math.random()*3);
+        if(type==0) return { t:`定価 <b>2500円</b> に <b>20%</b> の利益を足した売値は？`, a:3000, u:"円" };
+        if(type==1) return { t:`定員 <b>40人</b> の <b>130%</b> の希望者が来た。何人？`, a:52, u:"人" };
+        return { t:`<b>72ページ</b> 読んだ。これは全体の <b>60%</b>。全部で何ページ？`, a:120, u:"ページ" };
+    }
 }
 
 function next() {
-    q = getQ();
-    document.getElementById("disp").innerHTML = `
-        <p>だい ${count + 1} 問 / 8問</p>
-        <div style="font-size:1.2rem; margin:15px 0;"><b>${q.t}</b></div>
-        <input type="number" id="ans" autofocus> ${q.u}<br>
-        <button class="btn" onclick="check()">答え合わせ</button>
-        <div id="res"></div>
+    currentQ = make();
+    document.getElementById("game").innerHTML = `
+        <p>第 ${qCount+1} 問 / 10問</p>
+        <div class="card">${currentQ.t}</div>
+        <input type="number" id="ans" step="0.001" autofocus> ${currentQ.u}<br>
+        <button class="btn" onclick="check()" style="margin-top:20px;">決定</button>
+        <div id="msg"></div>
     `;
 }
 
 function check() {
     const val = parseFloat(document.getElementById("ans").value);
-    const res = document.getElementById("res");
-    if (isNaN(val)) return;
-
-    if (Math.abs(val - q.a) < 0.01) {
-        res.innerHTML = "<h2 style='color:blue;'>せいかい！</h2>";
-        score++;
+    if(isNaN(val)) return;
+    const msg = document.getElementById("msg");
+    if (Math.abs(val - currentQ.a) < 0.01) {
+        msg.innerHTML = "<h3 style='color:green;'>正解！</h3>"; score++;
     } else {
-        res.innerHTML = `<h2 style='color:red;'>まちがい… (正解:${q.a})</h2>`;
+        msg.innerHTML = `<h3 style='color:red;'>不正解 (正解:${currentQ.a})</h3>`;
     }
-    
-    count++;
-    if (count < 8) {
-        document.getElementById("disp").innerHTML += `<button class="btn" onclick="next()">つぎの問題</button>`;
-    } else {
-        document.getElementById("disp").innerHTML += `<button class="btn" onclick="end()">結果を見る</button>`;
-    }
+    qCount++;
+    const nextBtn = qCount < 10 ? `<button class="btn" onclick="next()">次へ</button>` : `<button class="btn" onclick="res()">結果発表</button>`;
+    document.getElementById("game").innerHTML += nextBtn;
 }
 
-function end() {
-    document.getElementById("disp").innerHTML = `
-        <h2>しゅうりょう！</h2>
-        <h1>${score} / 8 点</h1>
-        <button class="btn" onclick="start()">もういちど</button>
-    `;
+function res() {
+    document.getElementById("game").innerHTML = `<h2>終了！スコア: ${score}/10</h2><button class="btn" onclick="location.reload()">もう一度</button>`;
 }
 </script>
 </body>
