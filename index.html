@@ -3,76 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>割合テスト対策マスター</title>
+    <title>割合：テスト対策</title>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #fdf6e3; padding: 20px; }
-        .box { background: white; max-width: 450px; margin: 0 auto; padding: 20px; border-radius: 15px; border-top: 8px solid #cb4b16; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .btn { padding: 15px; margin: 10px; cursor: pointer; border-radius: 30px; border: none; font-size: 1.1rem; color: white; font-weight: bold; width: 90%; background: #cb4b16; }
-        .card { background: #eee8d5; padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 1.1rem; line-height: 1.6; }
-        input { font-size: 1.5rem; padding: 10px; width: 120px; border: 2px solid #cb4b16; border-radius: 10px; text-align: center; }
+        body { font-family: sans-serif; text-align: center; background: #e3f2fd; padding: 20px; }
+        .box { background: white; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 10px; border-top: 8px solid #1e88e5; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn { padding: 15px; width: 100%; background: #1e88e5; color: white; border: none; border-radius: 30px; font-size: 1.2rem; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        input { font-size: 1.8rem; width: 120px; padding: 5px; margin: 10px; border: 2px solid #1e88e5; border-radius: 8px; text-align: center; }
+        .q-text { font-size: 1.2rem; margin: 15px 0; line-height: 1.6; text-align: left; background: #f1f8ff; padding: 15px; border-radius: 8px; }
     </style>
 </head>
 <body>
-<div class="box" id="game">
-    <h2 style="color:#cb4b16;">割合：テスト対策特訓</h2>
-    <p>テストプリントの内容を完全カバー！<br>合格目指してがんばろう。</p>
-    <button class="btn" onclick="start()">特訓開始！</button>
+
+<div class="box" id="disp">
+    <h2 style="color:#1e88e5;">割合：テスト対策編</h2>
+    <p>テストプリントの問題を攻略しよう！</p>
+    <button class="btn" onclick="start()">スタート！</button>
 </div>
 
 <script>
-let score = 0; let qCount = 0; let currentQ = {};
+let score = 0; let count = 0; let q = {};
 
-function start() { score = 0; qCount = 0; next(); }
+// 添付のテスト内容を完全網羅
+const questions = [
+    { t: "80kgをもとにした56kgの割合は？（小数で）", a: 0.7, u: "" },
+    { t: "20回中16回シュートが入った。命中率は何％？", a: 80, u: "％" },
+    { t: "120gの30％は何g？", a: 36, u: "g" },
+    { t: "21人は15人の何％？", a: 140, u: "％" },
+    { t: "18Lが90％にあたるとき、もとの体積は何L？", a: 20, u: "L" },
+    { t: "定員40人の130％の希望者は何人？", a: 52, u: "人" },
+    { t: "仕入れ値2500円に20％の利益を加えた売値は何円？", a: 3000, u: "円" },
+    { t: "72ページ読んだ。これは全体の60％。全部で何ページ？", a: 120, u: "ページ" }
+];
 
-function make() {
-    const r = Math.random();
-    if (qCount < 3) {
-        [span_1](start_span)// 【知識】小数と百分率の変換[span_1](end_span)
-        let p = [6, 80, 193, 46.2, 150][Math.floor(Math.random()*5)];
-        return r > 0.5 ? { t:`割合 <b>${(p/100).toFixed(3).replace(/\.?0+$/, "")}</b> を<br>百分率（％）になおすと？`, a:p, u:"%" } 
-                       : { t:`<b>${p}%</b> を<br>割合（小数）になおすと？`, a:p/100, u:"" };
-    } else if (qCount < 7) {
-        [span_2](start_span)// 【技能】3公式（g、人、Lなどの単位含む）[span_2](end_span)
-        let type = Math.floor(Math.random()*3);
-        if(type==0) return { t:`<b>120g</b> の <b>30%</b> は何g？`, a:36, u:"g" };
-        if(type==1) return { t:`<b>21人</b> は <b>15人</b> の何％？`, a:140, u:"%" };
-        return { t:`<b>18L</b> が <b>90%</b> のとき、<br>もとの体積は何L？`, a:20, u:"L" };
-    } else {
-        [span_3](start_span)// 【思考】利益・100%超え・全体を求める応用[span_3](end_span)
-        let type = Math.floor(Math.random()*3);
-        if(type==0) return { t:`定価 <b>2500円</b> に <b>20%</b> の利益を足した売値は？`, a:3000, u:"円" };
-        if(type==1) return { t:`定員 <b>40人</b> の <b>130%</b> の希望者が来た。何人？`, a:52, u:"人" };
-        return { t:`<b>72ページ</b> 読んだ。これは全体の <b>60%</b>。全部で何ページ？`, a:120, u:"ページ" };
-    }
+function start() {
+    score = 0; count = 0;
+    showNext();
 }
 
-function next() {
-    currentQ = make();
-    document.getElementById("game").innerHTML = `
-        <p>第 ${qCount+1} 問 / 10問</p>
-        <div class="card">${currentQ.t}</div>
-        <input type="number" id="ans" step="0.001" autofocus> ${currentQ.u}<br>
-        <button class="btn" onclick="check()" style="margin-top:20px;">決定</button>
-        <div id="msg"></div>
+function showNext() {
+    q = questions[count];
+    document.getElementById("disp").innerHTML = `
+        <p>第 ${count + 1} 問 / ${questions.length}</p>
+        <div class="q-text"><b>${q.t}</b></div>
+        <input type="number" id="ans" autofocus> ${q.u}<br>
+        <button class="btn" onclick="checkAnswer()">答え合わせ</button>
     `;
+    document.getElementById("ans").focus();
 }
 
-function check() {
+function checkAnswer() {
     const val = parseFloat(document.getElementById("ans").value);
-    if(isNaN(val)) return;
-    const msg = document.getElementById("msg");
-    if (Math.abs(val - currentQ.a) < 0.01) {
-        msg.innerHTML = "<h3 style='color:green;'>正解！</h3>"; score++;
+    if (isNaN(val)) return;
+
+    let resultMsg = "";
+    if (Math.abs(val - q.a) < 0.01) {
+        resultMsg = "<h2 style='color:blue;'>せいかい！✨</h2>";
+        score++;
     } else {
-        msg.innerHTML = `<h3 style='color:red;'>不正解 (正解:${currentQ.a})</h3>`;
+        resultMsg = `<h2 style='color:red;'>まちがい...💦</h2><p>正解は <b>${q.a}</b> でした</p>`;
     }
-    qCount++;
-    const nextBtn = qCount < 10 ? `<button class="btn" onclick="next()">次へ</button>` : `<button class="btn" onclick="res()">結果発表</button>`;
-    document.getElementById("game").innerHTML += nextBtn;
+    
+    document.getElementById("disp").innerHTML += resultMsg;
+    count++;
+    
+    const nextBtn = count < questions.length ? 
+        `<button class="btn" onclick="showNext()">つぎの問題へ</button>` : 
+        `<button class="btn" onclick="showResult()">結果発表</button>`;
+    
+    document.getElementById("disp").innerHTML += nextBtn;
 }
 
-function res() {
-    document.getElementById("game").innerHTML = `<h2>終了！スコア: ${score}/10</h2><button class="btn" onclick="location.reload()">もう一度</button>`;
+function showResult() {
+    let comment = score === questions.length ? "完璧！テスト100点確定！" : "あと少し！復習して満点を目指そう！";
+    document.getElementById("disp").innerHTML = `
+        <h2>しゅうりょう！</h2>
+        <h1 style="font-size:3rem; color:#1e88e5;">${score} / ${questions.length}</h1>
+        <p><b>${comment}</b></p>
+        <button class="btn" onclick="location.reload()">もう一度挑戦</button>
+    `;
 }
 </script>
 </body>
